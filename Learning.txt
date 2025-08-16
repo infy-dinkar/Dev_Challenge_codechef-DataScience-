@@ -1,0 +1,280 @@
+📝 Pandas Notes – unique(), nunique(), value_counts()
+
+==================================================
+Sample DataFrame Creation
+==================================================
+
+import pandas as pd
+
+# Create a small sample DataFrame
+data = {
+    "Text": ["Hello", "Bonjour", "Hola", "Salut", "Namaste", "Hello", "Hola"],
+    "Language": ["English", "French", "Spanish", "French", "Hindi", "English", "Spanish"]
+}
+
+df = pd.DataFrame(data)
+print("Sample DataFrame:")
+print(df)
+
+# Output:
+#       Text Language
+# 0    Hello  English
+# 1  Bonjour   French
+# 2     Hola  Spanish
+# 3    Salut   French
+# 4  Namaste    Hindi
+# 5    Hello  English
+# 6     Hola  Spanish
+
+
+==================================================
+unique()
+==================================================
+
+print(df['Language'].unique())
+
+# Output:
+# ['English' 'French' 'Spanish' 'Hindi']
+
+
+==================================================
+nunique()
+==================================================
+
+print(df['Language'].nunique())
+
+# Output:
+# 4
+
+
+==================================================
+value_counts()
+==================================================
+
+print(df['Language'].value_counts())
+
+# Output:
+# English    2
+# French     2
+# Spanish    2
+# Hindi      1
+# Name: Language, dtype: int64
+
+
+==================================================
+value_counts(normalize=True)
+==================================================
+
+print(df['Language'].value_counts(normalize=True) * 100)
+
+# Output:
+# English    28.571429
+# French     28.571429
+# Spanish    28.571429
+# Hindi      14.285714
+# Name: Language, dtype: float64
+
+
+==================================================
+📌 Quick Summary
+==================================================
+- unique() → List of distinct values (NumPy array)
+- nunique() → Number of distinct values (int)
+- value_counts() → Frequency of each unique value (Series)
+- value_counts(normalize=True) → Percentage distribution
+
+============================================********************************======================================
+
+
+📝 Pandas Notes – strip()
+
+==================================================
+Sample DataFrame Creation
+==================================================
+
+import pandas as pd
+
+# Create a small sample DataFrame
+data = {
+    "Text": ["   Hello   ", " Bonjour", "Hola   ", "  Salut", "Namaste  "]
+}
+
+df = pd.DataFrame(data)
+print("Sample DataFrame:")
+print(df)
+
+# Output:
+#          Text
+# 0     "   Hello   "
+# 1     " Bonjour"
+# 2     "Hola   "
+# 3     "  Salut"
+# 4     "Namaste  "
+
+
+==================================================
+strip() → Remove leading & trailing spaces
+==================================================
+
+df['Text_stripped'] = df['Text'].str.strip()
+print(df)
+
+# Output:
+#          Text Text_stripped
+# 0     "   Hello   "       "Hello"
+# 1     " Bonjour"          "Bonjour"
+# 2     "Hola   "           "Hola"
+# 3     "  Salut"           "Salut"
+# 4     "Namaste  "         "Namaste"
+
+
+==================================================
+lstrip() → Remove only leading spaces
+==================================================
+
+df['Text_lstripped'] = df['Text'].str.lstrip()
+print(df)
+
+# Output:
+#          Text Text_lstripped
+# 0     "   Hello   "     "Hello   "
+# 1     " Bonjour"        "Bonjour"
+# 2     "Hola   "         "Hola   "
+# 3     "  Salut"         "Salut"
+# 4     "Namaste  "       "Namaste  "
+
+
+==================================================
+rstrip() → Remove only trailing spaces
+==================================================
+
+df['Text_rstripped'] = df['Text'].str.rstrip()
+print(df)
+
+# Output:
+#          Text Text_rstripped
+# 0     "   Hello   "     "   Hello"
+# 1     " Bonjour"        " Bonjour"
+# 2     "Hola   "         "Hola"
+# 3     "  Salut"         "  Salut"
+# 4     "Namaste  "       "Namaste"
+
+
+==================================================
+📌 Quick Summary
+==================================================
+- strip() → Removes spaces from both ends
+- lstrip() → Removes spaces only from left side
+- rstrip() → Removes spaces only from right side
+
+================================================*************=====================================================
+
+
+
+
+.str.upper() → Converts all text to UPPERCASE
+
+.str.lower() → Converts all text to lowercase
+
+.str.title() → Capitalizes the first letter of each word
+
+================================================**************====================================================
+📝 Regex in Data Analysis with `import re`
+
+==================================================
+1. Importing regex
+==================================================
+
+import re
+
+
+==================================================
+2. Finding all numbers in a text (retrieving numbers)
+==================================================
+
+text = "Order123 has 45 apples and 6789 bananas."
+numbers = re.findall(r'\d+', text)   # \d+ → one or more digits
+print(numbers)
+
+# Output:
+# ['123', '45', '6789']
+
+✅ Useful when you want to extract IDs, prices, quantities.
+
+
+==================================================
+3. Deleting all numbers from text
+==================================================
+
+text = "My phone number is 9876543210"
+cleaned_text = re.sub(r'\d+', '', text)
+print(cleaned_text)
+
+# Output:
+# "My phone number is "
+
+✅ Helps when you want only text data, without numeric noise.
+
+
+==================================================
+4. Extracting words (ignoring numbers & symbols)
+==================================================
+
+text = "Python3 is #1 in 2025!"
+words = re.findall(r'[A-Za-z]+', text)
+print(words)
+
+# Output:
+# ['Python', 'is', 'in']
+
+✅ Gets only alphabetical words.
+
+
+==================================================
+5. Removing extra spaces
+==================================================
+
+text = "Data     Science   is   fun"
+cleaned = re.sub(r'\s+', ' ', text).strip()
+print(cleaned)
+
+# Output:
+# "Data Science is fun"
+
+✅ Normalizes messy spacing.
+
+
+==================================================
+6. Extracting emails
+==================================================
+
+text = "Contact us at support@gmail.com or info@iitg.ac.in"
+emails = re.findall(r'[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}', text)
+print(emails)
+
+# Output:
+# ['support@gmail.com', 'info@iitg.ac.in']
+
+
+==================================================
+7. Extracting hashtags
+==================================================
+
+text = "Loving #DataScience and #AI"
+hashtags = re.findall(r'#\w+', text)
+print(hashtags)
+
+# Output:
+# ['#DataScience', '#AI']
+
+
+==================================================
+📌 Quick Summary
+==================================================
+- \d+ → Extract numbers
+- re.sub(r'\d+', '', text) → Remove numbers
+- [A-Za-z]+ → Extract only words
+- \s+ → Normalize spaces
+- Email regex → Extract email IDs
+- #\w+ → Extract hashtags
+
