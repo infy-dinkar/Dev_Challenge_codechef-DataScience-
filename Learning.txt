@@ -278,3 +278,125 @@ print(hashtags)
 - Email regex → Extract email IDs
 - #\w+ → Extract hashtags
 
+
+=============================================*************========================================================
+
+
+==================================================
+1. Dropping rows with missing text
+==================================================
+
+data.dropna(subset=['Text'], inplace=True)
+
+👉 Removes rows where the column "Text" has missing values (NaN).
+
+* subset=['Text'] → Only check the Text column.
+* inplace=True → Apply changes directly to the dataframe.
+
+Example:
+
+import pandas as pd
+
+df = pd.DataFrame({
+    "Text": ["Hello", None, "World"],
+    "Lang": ["en", "fr", "en"]
+})
+
+df.dropna(subset=['Text'], inplace=True)
+print(df)
+
+Output:
+
+    Text  Lang
+0  Hello    en
+2  World    en
+
+✅ Row with None in Text was dropped.
+
+
+==================================================
+2. Converting column to string type
+==================================================
+
+data['Text'] = data['Text'].astype(str)
+
+👉 Ensures all values in "Text" are strings, even if they were numbers or floats.
+
+Example:
+
+df = pd.DataFrame({
+    "Text": [123, "Hello", 45.6],
+    "Lang": ["en", "en", "en"]
+})
+
+df['Text'] = df['Text'].astype(str)
+print(df.dtypes)
+
+Output:
+
+Text    object
+Lang    object
+dtype: object
+
+✅ Now every value in "Text" is treated as a string.
+
+
+==================================================
+3. Applying a cleaning function
+==================================================
+
+data['Cleaned_Text'] = data['Text'].apply(preprocess_text)
+
+👉 Applies a custom function to each row in "Text" and saves results in "Cleaned_Text".
+
+Example:
+
+def preprocess_text(text):
+    return text.lower()
+
+df = pd.DataFrame({
+    "Text": ["HELLO WORLD", "Python IS Fun"]
+})
+
+df["Cleaned_Text"] = df["Text"].apply(preprocess_text)
+print(df)
+
+Output:
+
+             Text   Cleaned_Text
+0    HELLO WORLD    hello world
+1  Python IS Fun  python is fun
+
+✅ Text is processed row by row.
+
+
+==================================================
+4. Saving dataframe to CSV
+==================================================
+
+data.to_csv("cleaned.csv", index=False)
+
+👉 Saves dataframe to a CSV file.
+
+* index=False → avoids writing row numbers to the file.
+
+Example CSV content:
+
+Text,Cleaned_Text
+HELLO WORLD,hello world
+Python IS Fun,python is fun
+
+✅ Only data is saved, no extra index column.
+
+
+==================================================
+📌 Quick Summary
+==================================================
+* dropna(subset=['Text']) → Remove rows with missing text.
+* astype(str) → Convert all values to string.
+* .apply(preprocess_text) → Run a cleaning function on each row.
+* .to_csv(index=False) → Save cleaned data without extra index column.
+
+
+
+
